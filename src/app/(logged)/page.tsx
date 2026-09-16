@@ -19,16 +19,22 @@ import StateCard from "../../components/atoms/StateCard";
 import DashboardTemplate from "../../components/templates/DashboardTemplate";
 import StateCardWrapper from "../../components/molecules/StateCardWrapper";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CreateTodoFormData, createTodoSchema, EditTodoFormData, editTodoSchema } from "@/src/schemas/todoSchema";
+import {
+  CreateTodoFormData,
+  createTodoSchema,
+  EditTodoFormData,
+  editTodoSchema,
+} from "@/src/schemas/todoSchema";
 import { useForm } from "react-hook-form";
+import FormDashboardWrapper from "@/src/components/organisms/FormDashboardWrapper";
 
 export default function DashboardPage() {
   const { data: todolist, isLoading } = useTodoList();
-  const { mutateAsync: createTodo, isPending } = useCreateTodo();
-  const { mutateAsync: editTodo } = useEditodo();
-  const { mutateAsync: deleteTodo } = useDeleteTodo();
+  const { mutateAsync: createTodo, isPending: isPendingCreate } = useCreateTodo();
+  const { mutateAsync: editTodo, isPending: isPendingEdit } = useEditodo();
+  const { mutateAsync: deleteTodo, isPending: isPendingDelete } = useDeleteTodo();
   const { filter, setFilter } = useFilter();
-  const [isEdit, setIsEdit] = useState(false)
+  const [isEdit, setIsEdit] = useState(false);
 
   const {
     register: registerCreateTodo,
@@ -99,10 +105,10 @@ export default function DashboardPage() {
           value={data.status}
           onChange={async (e) => {
             const result = await editTodo({
-                id: data.id,
-                name: data.name,
-                status: e.target.value as TodoType,
-              });
+              id: data.id,
+              name: data.name,
+              status: e.target.value as TodoType,
+            });
             if (result) {
               alert("Pendaftaran berhasil!");
             }
@@ -125,9 +131,10 @@ export default function DashboardPage() {
           <div className="flex gap-2">
             <Button
               onClick={() => {
-                setValueEditTodo("id", data.id)
-                setValueEditTodo("name", data.name)
-                setIsEdit(true)
+                setValueEditTodo("id", data.id);
+                setValueEditTodo("name", data.name);
+                setValueEditTodo("status", data.status);
+                setIsEdit(true);
               }}
             >
               <Edit size={14} />
@@ -140,6 +147,7 @@ export default function DashboardPage() {
                   alert("Pendaftaran berhasil!");
                 }
               }}
+              disabled={isPendingDelete}
               color="danger"
             >
               <Trash size={14} />
@@ -180,12 +188,11 @@ export default function DashboardPage() {
         />
       </StateCardWrapper>
 
-      {/* FORM TAMBAH TUGAS */}
-      <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-5 backdrop-blur-xl">
-        <h2 className="text-sm font-bold uppercase tracking-wider text-slate-300 mb-4">
-          Tambah Tugas Baru
-        </h2>
-        <form onSubmit={handleSubmitCreateTodo(onSubmitCreateTodo)} className="flex flex-col gap-3">
+      <FormDashboardWrapper title="Buat Tugas Baru">
+        <form
+          onSubmit={handleSubmitCreateTodo(onSubmitCreateTodo)}
+          className="flex flex-col gap-3"
+        >
           <TextField
             type="text"
             placeholder="Tuliskan tugas yang akan dikerjakan..."
@@ -193,44 +200,36 @@ export default function DashboardPage() {
             {...registerCreateTodo("name")}
           />
           <div className="flex justify-end">
-            <Button
-              type="submit"
-              className="w-40"
-              disabled={isPending}
-            >
+            <Button type="submit" className="w-40" disabled={isPendingCreate}>
               Tambah
             </Button>
           </div>
         </form>
-      </div>
+      </FormDashboardWrapper>
 
       {isEdit && (
-        <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-5 backdrop-blur-xl">
-          <h2 className="text-sm font-bold uppercase tracking-wider text-slate-300 mb-4">
-            Edit Tugas
-          </h2>
-          <form onSubmit={handleSubmitEditTodo(onSubmitEditTodo)} className="flex flex-col gap-3">
+        <FormDashboardWrapper title="Edit Tugas">
+          <form
+            onSubmit={handleSubmitEditTodo(onSubmitEditTodo)}
+            className="flex flex-col gap-3"
+          >
             <TextField
               type="text"
-              placeholder="Tuliskan tugas yang akan dikerjakan..."
+              placeholder="Ubah tugas yang kamu miliki..."
               error={errorsEditTodo.name?.message}
               {...registerEditTodo("name")}
             />
             <div className="flex justify-end gap-2">
-              <Button
-                type="submit"
-                className="w-40"
-                disabled={isPending}
-              >
+              <Button type="submit" className="w-40" disabled={isPendingEdit}>
                 Ubah
               </Button>
               <Button
                 type="button"
                 className="w-40"
-                disabled={isPending}
+                disabled={isPendingEdit}
                 onClick={() => {
-                  setIsEdit(false)
-                  resetEditTodo()
+                  setIsEdit(false);
+                  resetEditTodo();
                 }}
                 color="danger"
               >
@@ -238,36 +237,38 @@ export default function DashboardPage() {
               </Button>
             </div>
           </form>
-        </div>
-        )}
+        </FormDashboardWrapper>
+      )}
 
       {/* SEARCH & FILTER BAR */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="relative flex-1 max-w-md">
-          <TextField
-            value={filter.search}
-            onChange={(e) => {
-              setFilter({ search: e.target.value, offset: 0 });
-            }}
-            placeholder="Cari tugas..."
-          />
-        </div>
+      <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-5 backdrop-blur-xl">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="relative flex-1 max-w-md">
+            <TextField
+              value={filter.search}
+              onChange={(e) => {
+                setFilter({ search: e.target.value, offset: 0 });
+              }}
+              placeholder="Cari tugas..."
+            />
+          </div>
 
-        <div className="flex gap-2">
-          <Dropdown
-            value={filter.limit}
-            onChange={(e) => {
-              setFilter({ limit: Number(e.target.value), offset: 0 });
-            }}
-            options={options.perPage}
-          />
-          <Dropdown
-            value={filter.status}
-            onChange={(e) => {
-              setFilter({ status: e.target.value as TodoType, offset: 0 });
-            }}
-            options={options.todoStatusFilter}
-          />
+          <div className="flex gap-2">
+            <Dropdown
+              value={filter.limit}
+              onChange={(e) => {
+                setFilter({ limit: Number(e.target.value), offset: 0 });
+              }}
+              options={options.perPage}
+            />
+            <Dropdown
+              value={filter.status}
+              onChange={(e) => {
+                setFilter({ status: e.target.value as TodoType, offset: 0 });
+              }}
+              options={options.todoStatusFilter}
+            />
+          </div>
         </div>
       </div>
 

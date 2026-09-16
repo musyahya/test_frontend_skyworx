@@ -41,7 +41,7 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
             suppressHydrationWarning
             {...props}
             className={cn(
-              "block w-full rounded-xl border border-slate-800  px-4 py-3 bg-slate-950 text-sm transition-colors focus:outline-none focus:ring-1",
+              "block w-full rounded-xl border border-slate-700  px-4 py-3 bg-slate-950 text-sm transition-colors focus:outline-none focus:ring-1",
               !!error
                 ? [
                     "placeholder-red-100/50 focus:border-red-400 focus:ring-red-400",
