@@ -1,5 +1,6 @@
 "use client";
 
+import axios from "@/src/lib/axios";
 import React, { useState } from "react";
 
 export default function LoginPage() {

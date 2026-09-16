@@ -1,15 +1,11 @@
 "use client";
 
+import axios from "@/src/lib/axios";
 import React, { useState } from "react";
 
 export default function RegisterPage() {
-  const [isLogin, setIsLogin] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
-
-  // State Form Login
-  const [loginEmail, setLoginEmail] = useState<string>("");
-  const [loginPassword, setLoginPassword] = useState<string>("");
 
   // State Form Register
   const [regName, setRegName] = useState<string>("");
@@ -20,23 +16,31 @@ export default function RegisterPage() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!isLogin && regPassword !== regConfirmPassword) {
+      axios.post("/register", {
+        name: "Asd",
+        password: "asdasd",
+        email: "asd@asd.asd"
+      })
+      .then((response) => {
+        console.log("success", response)
+      })
+      .catch((error) => {
+        console.log("error", error)
+      })
+
+    if (regPassword !== regConfirmPassword) {
       alert("Konfirmasi kata sandi tidak cocok!");
       return;
     }
 
     setLoading(true);
 
-    if (isLogin) {
-      console.log("Payload Login:", { email: loginEmail, password: loginPassword });
-    } else {
-      console.log("Payload Register:", { name: regName, email: regEmail, password: regPassword });
-    }
+    console.log("Payload Register:", { name: regName, email: regEmail, password: regPassword });
 
     // Simulasi request API
     setTimeout(() => {
       setLoading(false);
-      alert(isLogin ? "Berhasil login!" : "Pendaftaran berhasil!");
+      alert("Pendaftaran berhasil!");
     }, 1200);
   };
 
@@ -51,12 +55,10 @@ export default function RegisterPage() {
         {/* Header & Switcher */}
         <div className="space-y-4 text-center">
           <h2 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
-            {isLogin ? "Selamat Datang Kembali" : "Buat Akun Baru"}
+            {"Buat Akun Baru"}
           </h2>
           <p className="text-xs text-slate-400 sm:text-sm">
-            {isLogin
-              ? "Masukkan akun kamu untuk melanjutkan akses"
-              : "Lengkapi data di bawah ini untuk mendaftar"}
+            {"Lengkapi data di bawah ini untuk mendaftar"}
           </p>
 
         </div>
@@ -64,21 +66,19 @@ export default function RegisterPage() {
         {/* Form Body */}
         <form className="space-y-4" onSubmit={handleSubmit}>
           {/* Input Nama (Khusus Register) */}
-          {!isLogin && (
-            <div>
-              <label className="block text-xs font-medium uppercase tracking-wider text-slate-300">
-                Nama Lengkap
-              </label>
-              <input
-                type="text"
-                required
-                value={regName}
-                onChange={(e) => setRegName(e.target.value)}
-                placeholder="John Doe"
-                className="mt-1.5 block w-full rounded-xl border border-slate-800 bg-slate-950 px-4 py-3 text-sm text-slate-100 placeholder-slate-600 transition-colors focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-              />
-            </div>
-          )}
+          <div>
+            <label className="block text-xs font-medium uppercase tracking-wider text-slate-300">
+              Nama Lengkap
+            </label>
+            <input
+              type="text"
+              required
+              value={regName}
+              onChange={(e) => setRegName(e.target.value)}
+              placeholder="John Doe"
+              className="mt-1.5 block w-full rounded-xl border border-slate-800 bg-slate-950 px-4 py-3 text-sm text-slate-100 placeholder-slate-600 transition-colors focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+            />
+          </div>
 
           {/* Input Email */}
           <div>
@@ -88,9 +88,9 @@ export default function RegisterPage() {
             <input
               type="email"
               required
-              value={isLogin ? loginEmail : regEmail}
+              value={regEmail}
               onChange={(e) =>
-                isLogin ? setLoginEmail(e.target.value) : setRegEmail(e.target.value)
+                setRegEmail(e.target.value)
               }
               placeholder="nama@email.com"
               className="mt-1.5 block w-full rounded-xl border border-slate-800 bg-slate-950 px-4 py-3 text-sm text-slate-100 placeholder-slate-600 transition-colors focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
@@ -106,9 +106,9 @@ export default function RegisterPage() {
               <input
                 type={showPassword ? "text" : "password"}
                 required
-                value={isLogin ? loginPassword : regPassword}
+                value={regPassword}
                 onChange={(e) =>
-                  isLogin ? setLoginPassword(e.target.value) : setRegPassword(e.target.value)
+                  setRegPassword(e.target.value)
                 }
                 placeholder="••••••••"
                 className="block w-full rounded-xl border border-slate-800 bg-slate-950 px-4 py-3 text-sm text-slate-100 placeholder-slate-600 transition-colors focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
@@ -124,8 +124,7 @@ export default function RegisterPage() {
           </div>
 
           {/* Input Konfirmasi Password (Khusus Register) */}
-          {!isLogin && (
-            <div>
+          <div>
               <label className="block text-xs font-medium uppercase tracking-wider text-slate-300">
                 Ulangi Kata Sandi
               </label>
@@ -138,7 +137,6 @@ export default function RegisterPage() {
                 className="mt-1.5 block w-full rounded-xl border border-slate-800 bg-slate-950 px-4 py-3 text-sm text-slate-100 placeholder-slate-600 transition-colors focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
               />
             </div>
-          )}
 
           {/* Tombol Submit */}
           <button
@@ -152,7 +150,7 @@ export default function RegisterPage() {
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
               </svg>
             )}
-            {loading ? "Memproses..." : isLogin ? "Masuk ke Akun" : "Daftar Akun Baru"}
+            {loading ? "Memproses..." : "Daftar Akun Baru"}
           </button>
         </form>
 
