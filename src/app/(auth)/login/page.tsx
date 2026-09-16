@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 
 export default function RegisterPage() {
   const router = useRouter()
-  const {mutate: login, isPending} = useLoginMutation()
+  const {mutateAsync: login, isPending} = useLoginMutation()
 
    const {
     register,
@@ -23,9 +23,11 @@ export default function RegisterPage() {
 
   const onSubmit = async (data: LoginFormData) => {
     try {
-      await login(data)
-      router.push("/")
-      alert("Pendaftaran berhasil!");
+      const result = await login(data)
+      if(result){
+        router.push("/")
+        alert("Pendaftaran berhasil!");
+      }
     } catch (error) {
       console.error("Register gagal:", error);
       alert("Pendaftaran gagal. Silakan coba lagi.");

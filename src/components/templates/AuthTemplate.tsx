@@ -1,13 +1,12 @@
 "use client";
 
-import React, { ReactNode } from "react";
+import React, { PropsWithChildren } from "react";
 
 interface AuthTemplate {
-  children: ReactNode;
   header: string;
 }
 
-function AuthTemplate({ children, header }: AuthTemplate) {
+function AuthTemplate({ children, header }: PropsWithChildren<AuthTemplate>) {
   return (
     <div className="relative flex min-h-screen items-center justify-center bg-slate-950 px-4 py-12 text-slate-100 sm:px-6 lg:px-8">
       {/* Background Radial Glow */}

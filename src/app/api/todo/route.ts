@@ -1,12 +1,7 @@
+import { Todo } from "@/src/types/todo";
 import { NextResponse } from "next/server";
 
-export interface TodoItem {
-  id: number;
-  name: string;
-  status: "todo" | "inProgress" | "done";
-}
-
-export const dummyTodos: TodoItem[] = [
+export const dummyTodos: Todo[] = [
   { id: 1, name: "Review pull request refactoring admin", status: "todo" },
   { id: 2, name: "Optimasi query Prisma ke database SQLite", status: "done" },
   { id: 3, name: "Integrasi fitur pencarian di dashboard", status: "inProgress" },
@@ -26,19 +21,44 @@ export const dummyTodos: TodoItem[] = [
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
+  
   const search = searchParams.get("search");
+  const status = searchParams.get("status");
+  const limitParam = searchParams.get("limit");
+  const offsetParam = searchParams.get("offset");
 
-  let filteredUsers = dummyTodos;
+  const limit = Number(limitParam ?? 10);
+  const offset = Number(offsetParam ?? 0);
+
+  let filteredTodos = dummyTodos;
+
+  const total = filteredTodos.length;
+  const totalTodo = filteredTodos.filter((data) => data.status === "todo").length;
+  const totalInProgress = filteredTodos.filter((data) => data.status === "inProgress").length;
+  const totalDone = filteredTodos.filter((data) => data.status === "done").length;
 
   if (search) {
-    filteredUsers = dummyTodos.filter((user) =>
-      user.name.toLowerCase().includes(search.toLowerCase())
+    filteredTodos = dummyTodos.filter((todo) =>
+      todo.name.toLowerCase().includes(search.toLowerCase())
     );
   }
 
+  if (status) {
+    filteredTodos = dummyTodos.filter((todo) =>
+      todo.status.toLowerCase().includes(status.toLowerCase())
+    );
+  }
+
+  let paginatedTodos = filteredTodos;
+
+  paginatedTodos = filteredTodos.slice(offset, offset + limit);
+
   return NextResponse.json({
-    total: filteredUsers.length,
-    data: filteredUsers,
+    total,
+    total_todo: totalTodo,
+    total_in_progress: totalInProgress,
+    total_done: totalDone,
+    data: paginatedTodos,
   });
 }
 
@@ -55,9 +75,7 @@ export async function POST(request: Request) {
     }
 
     return NextResponse.json(
-      {
-        id: 1,
-      },
+      1,
       { status: 201 }
     );
   } catch (error) {

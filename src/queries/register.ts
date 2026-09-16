@@ -4,6 +4,7 @@ import { RegisterFormData } from "../schemas/registerSchema"
 
 export const useRegisterMutation = () => useMutation({
     mutationFn: async (data: RegisterFormData) => {
-        return await axios.post('/api/register', data)
+        const {repeatPassword, ...props} = data
+        return await axios.post('/api/register', props)
     },
   })

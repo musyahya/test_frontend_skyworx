@@ -1,9 +1,9 @@
 "use client"
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import React, { ReactNode } from 'react'
+import React, { PropsWithChildren } from 'react'
 
-function QueryTemplate({children}: {children: ReactNode}) {
+function QueryProvider({children}: PropsWithChildren) {
      const queryClient = new QueryClient()
 
   return (
@@ -13,4 +13,4 @@ function QueryTemplate({children}: {children: ReactNode}) {
   )
 }
 
-export default QueryTemplate
+export default QueryProvider

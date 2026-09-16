@@ -23,9 +23,11 @@ export default function RegisterPage() {
 
   const onSubmit = async (data: RegisterFormData) => {
     try {
-      await postRegister(data)
-      alert("Pendaftaran berhasil!");
-      router.push("login")
+      const result = await postRegister(data)
+      if(result){
+        alert("Pendaftaran berhasil!");
+        router.push("login")
+      }
     } catch (error) {
       console.error("Register gagal:", error);
       alert("Pendaftaran gagal. Silakan coba lagi.");

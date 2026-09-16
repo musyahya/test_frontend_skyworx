@@ -2,7 +2,7 @@ import cn from '@/src/lib/cn'
 import React, { SelectHTMLAttributes } from 'react'
 
 interface DropdownProps extends SelectHTMLAttributes<HTMLSelectElement> {
-  options: {label: string, value: string}[]
+  options: {label: string, value: string | number, className?: string}[]
 }
 
 function Dropdown({options, className, ...props}: DropdownProps) {
@@ -17,7 +17,7 @@ function Dropdown({options, className, ...props}: DropdownProps) {
         >
           {
             options.map((option) => (
-              <option value={option.value}>{option.label}</option>
+              <option className={option.className} key={option.value} value={option.value}>{option.label}</option>
             ))
           }
     </select>

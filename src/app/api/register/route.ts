@@ -13,9 +13,7 @@ export async function POST(request: Request) {
     }
 
     return NextResponse.json(
-      {
-        id: 2,
-      },
+      2,
       { status: 201 }
     );
   } catch (error) {
