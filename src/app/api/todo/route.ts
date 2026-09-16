@@ -26,6 +26,8 @@ export async function GET(request: Request) {
   const status = searchParams.get("status");
   const limitParam = searchParams.get("limit");
   const offsetParam = searchParams.get("offset");
+  const orderBy = searchParams.get("order_by");
+  const order = searchParams.get("order") || "asc";
 
   const limit = Number(limitParam ?? 10);
   const offset = Number(offsetParam ?? 0);
@@ -47,6 +49,24 @@ export async function GET(request: Request) {
     filteredTodos = dummyTodos.filter((todo) =>
       todo.status.toLowerCase().includes(status.toLowerCase())
     );
+  }
+
+ if (orderBy === "id" || orderBy === "name" || orderBy === "status") {
+    filteredTodos.sort((a, b) => {
+      const valA = a[orderBy];
+      const valB = b[orderBy];
+
+      if (typeof valA === "number" && typeof valB === "number") {
+        return order === "asc" ? valA - valB : valB - valA;
+      }
+
+      const strA = String(valA).toLowerCase();
+      const strB = String(valB).toLowerCase();
+
+      if (strA < strB) return order === "asc" ? -1 : 1;
+      if (strA > strB) return order === "asc" ? 1 : -1;
+      return 0;
+    });
   }
 
   let paginatedTodos = filteredTodos;

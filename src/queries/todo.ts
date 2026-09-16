@@ -20,6 +20,11 @@ export const useTodoList = () => {
     params.status = filter.status;
   }
 
+  if(filter.order_by && filter.order) {
+    params.order_by = filter.order_by;
+    params.order = filter.order;
+  }
+
   return useQuery({
     queryKey: ["todolist", params],
     queryFn: async () =>
