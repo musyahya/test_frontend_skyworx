@@ -4,6 +4,7 @@ import "../styles/globals.css";
 import QueryProvider from "../components/templates/QueryProvider";
 import { getTokenCookie } from "../lib/cookie";
 import { SessionProvider } from "../components/templates/SessionProvider";
+import { ToastProvider } from "../components/templates/ToastProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,7 +33,9 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full flex flex-col" suppressHydrationWarning>
         <SessionProvider token={token}>
           <QueryProvider>
-            {children}
+            <ToastProvider>
+              {children}
+            </ToastProvider>
           </QueryProvider>
         </SessionProvider>
       </body>

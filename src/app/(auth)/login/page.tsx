@@ -9,10 +9,12 @@ import { LoginFormData, loginSchema } from "@/src/schemas/loginSchema";
 import { useLoginMutation } from "@/src/queries/login";
 import { useRouter } from "next/navigation";
 import { setTokenCookie } from "@/src/lib/cookie";
+import { useToast } from "@/src/hooks/useToast";
 
-export default function RegisterPage() {
+export default function LoginPage() {
   const router = useRouter()
   const {mutateAsync: login, isPending} = useLoginMutation()
+  const {toast} = useToast()
 
    const {
     register,
@@ -28,11 +30,10 @@ export default function RegisterPage() {
       if(result){
         await setTokenCookie(result.data.access_token)
         router.push("/")
-        alert("Pendaftaran berhasil!");
+        toast.success("Login berhasil!");
       }
     } catch (error) {
-      console.error("Register gagal:", error);
-      alert("Pendaftaran gagal. Silakan coba lagi.");
+      toast.error("Login gagal. Silakan coba lagi.");
     }
   };
 
@@ -61,6 +62,8 @@ export default function RegisterPage() {
             {isPending ? "Memproses..." : "Daftar Akun Baru"}
           </Button>
         </form>
+
+        <div className="text bg-center text-sm text-center">Belum punya akun <span className="text-blue-300 cursor-pointer" onClick={() => router.push("/register")}>Daftar Sekarang</span></div>
     </AuthTemplate>
   );
 }

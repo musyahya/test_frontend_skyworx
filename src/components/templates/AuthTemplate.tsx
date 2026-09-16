@@ -1,7 +1,6 @@
 "use client";
 
 import React, { PropsWithChildren } from "react";
-
 interface AuthTemplate {
   header: string;
 }
@@ -9,7 +8,6 @@ interface AuthTemplate {
 function AuthTemplate({ children, header }: PropsWithChildren<AuthTemplate>) {
   return (
     <div className="relative flex min-h-screen items-center justify-center bg-slate-950 px-4 py-12 text-slate-100 sm:px-6 lg:px-8">
-      {/* Background Radial Glow */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 left-1/2 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-indigo-600/20 blur-[120px]" />
       </div>

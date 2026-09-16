@@ -8,10 +8,12 @@ import AuthTemplate from "@/src/components/templates/AuthTemplate";
 import Button from "@/src/components/atoms/Button";
 import { useRegisterMutation } from "@/src/queries/register";
 import { useRouter } from "next/navigation";
+import { useToast } from "@/src/hooks/useToast";
 
 export default function RegisterPage() {
   const { mutateAsync: postRegister, isPending } = useRegisterMutation();
   const router = useRouter()
+  const {toast} = useToast()
 
    const {
     register,
@@ -25,12 +27,11 @@ export default function RegisterPage() {
     try {
       const result = await postRegister(data)
       if(result){
-        alert("Pendaftaran berhasil!");
+        toast.success("Buat Akun Berhasil")
         router.push("login")
       }
     } catch (error) {
-      console.error("Register gagal:", error);
-      alert("Pendaftaran gagal. Silakan coba lagi.");
+      toast.error("Pendaftaran gagal. Silakan coba lagi.");
     }
   };
 
@@ -75,6 +76,8 @@ export default function RegisterPage() {
             {isPending ? "Memproses..." : "Daftar Akun Baru"}
           </Button>
         </form>
+
+        <div className="text bg-center text-sm text-center">Sudah punya akun <span className="text-blue-300 cursor-pointer" onClick={() => router.push("/login")}>Login Sekarang</span></div>
     </AuthTemplate>
   );
 }

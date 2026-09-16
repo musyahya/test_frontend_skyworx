@@ -6,14 +6,17 @@ import { LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React from "react";
 import Avatar from "../atoms/Avatar";
+import { useToast } from "@/src/hooks/useToast";
 
 function Navbar() {
   const router = useRouter();
   const {data, isLoading} = useUserMe()
+  const {toast} = useToast()
 
   const handleLogout = async () => {
     await clearAuthCookie()
     router.push("/login");
+    toast.success("Logout berhasil!");
   };
 
   return (

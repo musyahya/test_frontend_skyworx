@@ -27,6 +27,7 @@ import {
 } from "@/src/schemas/todoSchema";
 import { useForm } from "react-hook-form";
 import FormDashboardWrapper from "@/src/components/organisms/FormDashboardWrapper";
+import { useToast } from "@/src/hooks/useToast";
 
 export default function DashboardPage() {
   const { data: todolist, isLoading } = useTodoList();
@@ -35,6 +36,7 @@ export default function DashboardPage() {
   const { mutateAsync: deleteTodo, isPending: isPendingDelete } = useDeleteTodo();
   const { filter, setFilter } = useFilter();
   const [isEdit, setIsEdit] = useState(false);
+  const {toast} = useToast()
 
   const {
     register: registerCreateTodo,
@@ -58,28 +60,24 @@ export default function DashboardPage() {
   const onSubmitCreateTodo = async (data: CreateTodoFormData) => {
     try {
       const result = await createTodo(data);
-      console.log("result", result);
       if (result.data) {
-        alert("Pendaftaran berhasil!");
+        toast.success("Buat tugas baru berhasil!");
         resetCreateTodo();
       }
     } catch (error) {
-      console.error("Register gagal:", error);
-      alert("Pendaftaran gagal. Silakan coba lagi.");
+      toast.error("Buat tugas baru gagal. Silakan coba lagi.");
     }
   };
 
   const onSubmitEditTodo = async (data: EditTodoFormData) => {
     try {
       const result = await editTodo(data);
-      console.log("result", result);
       if (result.data) {
-        alert("Pendaftaran berhasil!");
+        toast.success("Edit tugas berhasil!");
         resetEditTodo();
       }
     } catch (error) {
-      console.error("Register gagal:", error);
-      alert("Pendaftaran gagal. Silakan coba lagi.");
+      toast.error("Edit tugas gagal. Silakan coba lagi.");
     }
   };
 
