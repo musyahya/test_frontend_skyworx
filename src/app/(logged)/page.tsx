@@ -37,9 +37,9 @@ export default function DashboardPage() {
   const { mutateAsync: deleteTodo, isPending: isPendingDelete } = useDeleteTodo();
   const { filter, setFilter } = useFilter();
   const [isEdit, setIsEdit] = useState(false);
-  const {toast} = useToast()
-  const [openModal, setOpenModal] = useState(false)
-  const [todoId, setTodoId] = useState<number | null>(null)
+  const { toast } = useToast();
+  const [openModal, setOpenModal] = useState(false);
+  const [todoId, setTodoId] = useState<number | null>(null);
 
   const {
     register: registerCreateTodo,
@@ -63,7 +63,7 @@ export default function DashboardPage() {
   const onSubmitCreateTodo = async (data: CreateTodoFormData) => {
     try {
       const result = await createTodo(data);
-      if (result.data) {
+      if (result?.data) {
         toast.success("Buat tugas baru berhasil!");
         resetCreateTodo();
       }
@@ -75,10 +75,10 @@ export default function DashboardPage() {
   const onSubmitEditTodo = async (data: EditTodoFormData) => {
     try {
       const result = await editTodo(data);
-      if (result.data) {
+      if (result?.data) {
         toast.success("Edit tugas berhasil!");
         resetEditTodo();
-        setIsEdit(false)
+        setIsEdit(false);
       }
     } catch (error) {
       toast.error("Edit tugas gagal. Silakan coba lagi.");
@@ -91,7 +91,9 @@ export default function DashboardPage() {
       accessor: (data) => (
         <span
           className={
-            data.status === "done" ? "line-through text-slate-500" : ""
+            data.status === "done"
+              ? "line-through text-slate-400 dark:text-slate-500"
+              : "text-slate-900 dark:text-slate-100 font-medium"
           }
         >
           {data.name}
@@ -106,21 +108,25 @@ export default function DashboardPage() {
           options={options.todoStatusTable}
           value={data.status}
           onChange={async (e) => {
-            const result = await editTodo({
-              id: data.id,
-              name: data.name,
-              status: e.target.value as TodoType,
-            });
-            if (result) {
-              alert("Pendaftaran berhasil!");
+            try {
+              const result = await editTodo({
+                id: data.id,
+                name: data.name,
+                status: e.target.value as TodoType,
+              });
+              if (result) {
+                toast.success("Status tugas berhasil diperbarui!");
+              }
+            } catch (error) {
+              toast.error("Gagal memperbarui status tugas.");
             }
           }}
           className={`${
             data.status === "done"
-              ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-400"
+              ? "border-emerald-500/30 bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400"
               : data.status === "inProgress"
-                ? "border-amber-500/30 bg-amber-500/10 text-amber-400"
-                : "border-slate-700 bg-slate-950 text-slate-300"
+                ? "border-amber-500/30 bg-amber-50 text-amber-700 dark:bg-amber-500/10 dark:text-amber-400"
+                : "border-slate-300 bg-slate-100 text-slate-700 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-300"
           }`}
         />
       ),
@@ -138,17 +144,21 @@ export default function DashboardPage() {
                 setValueEditTodo("status", data.status);
                 setIsEdit(true);
               }}
+              className="!w-auto p-2"
+              title="Edit Tugas"
             >
               <Edit size={14} />
             </Button>
 
             <Button
               onClick={() => {
-                setOpenModal(true)
-                setTodoId(data.id)
+                setOpenModal(true);
+                setTodoId(data.id);
               }}
               disabled={isPendingDelete}
               color="danger"
+              className="!w-auto p-2"
+              title="Hapus Tugas"
             >
               <Trash size={14} />
             </Button>
@@ -188,6 +198,7 @@ export default function DashboardPage() {
         />
       </StateCardWrapper>
 
+      {/* FORM TAMBAH TUGAS */}
       <FormDashboardWrapper title="Buat Tugas Baru">
         <form
           onSubmit={handleSubmitCreateTodo(onSubmitCreateTodo)}
@@ -207,6 +218,7 @@ export default function DashboardPage() {
         </form>
       </FormDashboardWrapper>
 
+      {/* FORM EDIT TUGAS */}
       {isEdit && (
         <FormDashboardWrapper title="Edit Tugas">
           <form
@@ -241,7 +253,7 @@ export default function DashboardPage() {
       )}
 
       {/* SEARCH & FILTER BAR */}
-      <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-5 backdrop-blur-xl">
+      <div className="rounded-2xl border border-slate-200 bg-white/80 p-5 shadow-sm backdrop-blur-xl transition-colors duration-200 dark:border-slate-800 dark:bg-slate-900/80">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="relative flex-1 max-w-md">
             <TextField
@@ -283,7 +295,7 @@ export default function DashboardPage() {
         offset={filter.offset}
         onChangeOffset={(offset) => setFilter({ offset: offset })}
         sortTable
-        orderBy={filter.order_by ?? "name"}
+        orderBy={filter.order_by ?? "id"}
         order={filter.order ?? "asc"}
         onChangeSort={(order_by, order) =>
           setFilter({ order_by, order, offset: 0 })
@@ -291,19 +303,20 @@ export default function DashboardPage() {
         isLoading={isLoading}
       />
 
+      {/* MODAL KONFIRMASI HAPUS */}
       <ConfirmModal
         isOpen={openModal}
         onClose={() => setOpenModal(false)}
         onConfirm={async () => {
           try {
-            if(todoId){
+            if (todoId) {
               const result = await deleteTodo(todoId);
               if (result) {
                 toast.success("Hapus tugas berhasil!");
-                setOpenModal(false)
-                setTodoId(null)
+                setOpenModal(false);
+                setTodoId(null);
               }
-            }else{
+            } else {
               toast.error("Hapus tugas gagal. Silakan coba lagi.");
             }
           } catch (error) {

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { PropsWithChildren, ReactNode } from "react";
+import React, { PropsWithChildren } from "react";
 
 function StateCardWrapper({ children }: PropsWithChildren) {
   return (

@@ -13,12 +13,10 @@ function AuthTemplate({ children, header }: PropsWithChildren<AuthTemplateProps>
 
   return (
     <div className="relative flex min-h-screen items-center justify-center bg-slate-50 text-slate-900 transition-colors duration-200 dark:bg-slate-950 dark:text-slate-100 px-4 py-12 sm:px-6 lg:px-8">
-      {/* Background Radial Glow */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 left-1/2 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-indigo-500/10 blur-[120px] dark:bg-indigo-600/20" />
       </div>
 
-      {/* Tombol Toggle Theme */}
       <div className="absolute top-6 right-6 sm:top-10 sm:right-10 z-20">
         <button
           onClick={toggleTheme}

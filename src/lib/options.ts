@@ -22,17 +22,14 @@ const options = {
         {
             label: "To Do",
             value: "todo",
-            className: "bg-slate-900 text-slate-300"
         },
         {
             label: "In Progress",
             value: "inprogress",
-            className: "bg-slate-900 text-amber-400"
         },
         {
             label: "Done",
             value: "done",
-            className: "bg-slate-900 text-emerald-400"
         },
     ],
 

@@ -12,11 +12,11 @@ import { setTokenCookie } from "@/src/lib/cookie";
 import { useToast } from "@/src/hooks/useToast";
 
 export default function LoginPage() {
-  const router = useRouter()
-  const {mutateAsync: login, isPending} = useLoginMutation()
-  const {toast} = useToast()
+  const router = useRouter();
+  const { mutateAsync: login, isPending } = useLoginMutation();
+  const { toast } = useToast();
 
-   const {
+  const {
     register,
     handleSubmit,
     formState: { errors },
@@ -26,10 +26,10 @@ export default function LoginPage() {
 
   const onSubmit = async (data: LoginFormData) => {
     try {
-      const result = await login(data)
-      if(result){
-        await setTokenCookie(result.data.access_token)
-        router.push("/")
+      const result = await login(data);
+      if (result) {
+        await setTokenCookie(result.data.access_token);
+        router.push("/");
         toast.success("Login berhasil!");
       }
     } catch (error) {
@@ -40,30 +40,37 @@ export default function LoginPage() {
   return (
     <AuthTemplate header="Selamat Datang Kembali">
       <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
-          <TextField
-            label="Email"
-            type="email"
-            placeholder="Masukan Email"
-            error={errors.email?.message}
-            {...register("email")}
-          />
+        <TextField
+          label="Email"
+          type="email"
+          placeholder="Masukan Email"
+          error={errors.email?.message}
+          {...register("email")}
+        />
 
-          <TextField
-            label="Password"
-            type="password"
-            placeholder="Masukan Password"
-            error={errors.password?.message}
-            {...register("password")}
-          />
-          <Button
-            type="submit"
-            disabled={isPending}
-          >
-            {isPending ? "Memproses..." : "Daftar Akun Baru"}
-          </Button>
-        </form>
+        <TextField
+          label="Password"
+          type="password"
+          placeholder="Masukan Password"
+          error={errors.password?.message}
+          {...register("password")}
+        />
 
-        <div className="text bg-center text-sm text-center">Belum punya akun <span className="text-blue-300 cursor-pointer" onClick={() => router.push("/register")}>Daftar Sekarang</span></div>
+        <Button type="submit" disabled={isPending}>
+          {isPending ? "Memproses..." : "Masuk ke Akun"}
+        </Button>
+      </form>
+
+      {/* Footer Text dengan dukungan Dark & Light mode */}
+      <div className="text-center text-sm text-slate-600 dark:text-slate-400 mt-4">
+        Belum punya akun?{" "}
+        <span
+          className="font-semibold text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300 cursor-pointer transition-colors"
+          onClick={() => router.push("/register")}
+        >
+          Daftar Sekarang
+        </span>
+      </div>
     </AuthTemplate>
   );
 }

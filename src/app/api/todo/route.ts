@@ -26,7 +26,7 @@ export async function GET(request: Request) {
   const status = searchParams.get("status");
   const limitParam = searchParams.get("limit");
   const offsetParam = searchParams.get("offset");
-  const orderBy = searchParams.get("order_by");
+  const orderBy = searchParams.get("order_by") || "id";
   const order = searchParams.get("order") || "asc";
 
   const limit = Number(limitParam ?? 10);

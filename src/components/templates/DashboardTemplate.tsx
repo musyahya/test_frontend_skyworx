@@ -5,10 +5,10 @@ import Sidebar from "../organisms/Navbar";
 
 function DashboardTemplate({ children }: PropsWithChildren) {
   return (
-    <div className="flex min-h-screen bg-slate-950 font-sans text-slate-100">
+    <div className="flex min-h-screen bg-slate-50 text-slate-900 transition-colors duration-200 dark:bg-slate-950 dark:text-slate-100 font-sans">
       {/* --- MAIN CONTENT --- */}
       <div className="flex-1 flex flex-col min-w-0">
-        {/* Header Top Bar */}
+        {/* Header Top Bar / Sidebar Navigation */}
         <Sidebar />
 
         {/* Content Body */}
