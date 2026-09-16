@@ -8,9 +8,10 @@ import { RegisterFormData, registerSchema } from "../../../schemas/registerSchem
 import { zodResolver } from "@hookform/resolvers/zod";
 import AuthTemplate from "@/src/components/templates/AuthTemplate";
 import Button from "@/src/components/atoms/Button";
+import { useRegisterMutation } from "@/src/queries/register";
 
 export default function RegisterPage() {
-  const [loading, setLoading] = useState<boolean>(false);
+  const { mutateAsync: postRegister, isPending } = useRegisterMutation();
 
    const {
     register,
@@ -22,20 +23,11 @@ export default function RegisterPage() {
 
   const onSubmit = async (data: RegisterFormData) => {
     try {
-      setLoading(true)
-      const response = await axios.post("/register", {
-        name: data.name,
-        email: data.email,
-        password: data.password,
-      });
-
-      console.log("success", response.data);
+      await postRegister(data)
       alert("Pendaftaran berhasil!");
     } catch (error) {
       console.error("Register gagal:", error);
       alert("Pendaftaran gagal. Silakan coba lagi.");
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -75,9 +67,9 @@ export default function RegisterPage() {
 
           <Button
             type="submit"
-            disabled={loading}
+            disabled={isPending}
           >
-            {loading ? "Memproses..." : "Daftar Akun Baru"}
+            {isPending ? "Memproses..." : "Daftar Akun Baru"}
           </Button>
         </form>
     </AuthTemplate>
