@@ -7,9 +7,14 @@ interface StateCard {
     total: number
     color: "white" | "gray" | "success" | "warning" | "danger",
     title: string
+    isLoading?: boolean
 }
 
-function StateCard({total, color, title}: StateCard) {
+function StateCard({total, color, title, isLoading = false}: StateCard) {
+    if(isLoading){
+        return <StateCardSkeleton/>
+    }
+
   return (
     <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-4 backdrop-blur-xl">
         <p className={cn(
@@ -31,3 +36,12 @@ function StateCard({total, color, title}: StateCard) {
 }
 
 export default StateCard
+
+const StateCardSkeleton = () => {
+    return (
+       <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-4 backdrop-blur-xl">
+        <div className='block w-1/2 h-3 rounded-full bg-neutral-600 animate-pulse'></div>
+        <div className='block w-1/2 h-3 rounded-full bg-neutral-600 animate-pulse mt-3'></div>
+    </div>
+    )
+}

@@ -23,7 +23,7 @@ import { CreateTodoFormData, createTodoSchema, EditTodoFormData, editTodoSchema 
 import { useForm } from "react-hook-form";
 
 export default function DashboardPage() {
-  const { data: todolist } = useTodoList();
+  const { data: todolist, isLoading } = useTodoList();
   const { mutateAsync: createTodo, isPending } = useCreateTodo();
   const { mutateAsync: editTodo } = useEditodo();
   const { mutateAsync: deleteTodo } = useDeleteTodo();
@@ -158,21 +158,25 @@ export default function DashboardPage() {
           title="Total Tugas"
           total={todolist?.data.total ?? 0}
           color="white"
+          isLoading={isLoading}
         />
         <StateCard
           title="To Do"
           total={todolist?.data.total_todo ?? 0}
           color="gray"
+          isLoading={isLoading}
         />
         <StateCard
           title="In Progress"
           total={todolist?.data.total_in_progress ?? 0}
           color="warning"
+          isLoading={isLoading}
         />
         <StateCard
           title="Done"
           total={todolist?.data.total_done ?? 0}
           color="success"
+          isLoading={isLoading}
         />
       </StateCardWrapper>
 
@@ -283,6 +287,7 @@ export default function DashboardPage() {
         onChangeSort={(order_by, order) =>
           setFilter({ order_by, order, offset: 0 })
         }
+        isLoading={isLoading}
       />
     </DashboardTemplate>
   );
