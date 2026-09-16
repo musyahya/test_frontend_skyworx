@@ -1,15 +1,15 @@
-"use client"
+"use client";
 
-import React, { ReactNode } from 'react'
+import React, { ReactNode } from "react";
 
 interface AuthTemplate {
-  children: ReactNode,
-  header: string
+  children: ReactNode;
+  header: string;
 }
 
-function AuthTemplate({children, header}: AuthTemplate) {
+function AuthTemplate({ children, header }: AuthTemplate) {
   return (
-     <div className="relative flex min-h-screen items-center justify-center bg-slate-950 px-4 py-12 text-slate-100 sm:px-6 lg:px-8">
+    <div className="relative flex min-h-screen items-center justify-center bg-slate-950 px-4 py-12 text-slate-100 sm:px-6 lg:px-8">
       {/* Background Radial Glow */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 left-1/2 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-indigo-600/20 blur-[120px]" />
@@ -24,10 +24,9 @@ function AuthTemplate({children, header}: AuthTemplate) {
         </div>
 
         {children}
-
       </div>
     </div>
-  )
+  );
 }
 
-export default AuthTemplate
+export default AuthTemplate;
