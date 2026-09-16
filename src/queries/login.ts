@@ -4,6 +4,6 @@ import { LoginFormData } from "../schemas/loginSchema"
 
 export const useLoginMutation = () => useMutation({
     mutationFn: async (data: LoginFormData) => {
-      return await axios.post('/api/login', data)
+      return await axios.post<{access_token: string}>('/api/login', data)
     },
   })

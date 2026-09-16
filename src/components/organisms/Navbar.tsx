@@ -1,14 +1,15 @@
 "use client";
 
+import { clearAuthCookie } from "@/src/lib/cookie";
 import { LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React from "react";
 
-function Sidebar() {
+function Navbar() {
   const router = useRouter();
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
+  const handleLogout = async () => {
+    await clearAuthCookie()
     router.push("/login");
   };
 
@@ -39,4 +40,4 @@ function Sidebar() {
   );
 }
 
-export default Sidebar;
+export default Navbar;

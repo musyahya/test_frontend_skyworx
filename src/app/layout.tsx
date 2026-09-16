@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "../styles/globals.css";
 import QueryProvider from "../components/templates/QueryProvider";
+import { getTokenCookie } from "../lib/cookie";
+import { SessionProvider } from "../components/templates/SessionProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,8 +21,8 @@ export const metadata: Metadata = {
     "Aplikasi manajemen tugas modern untuk membantu Anda mengatur prioritas, melacak progres proyek, dan meningkatkan produktivitas harian secara real-time.",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
- 
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  const token = await getTokenCookie()
 
   return (
     <html
@@ -28,9 +30,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <QueryProvider>
-          {children}
-        </QueryProvider>
+        <SessionProvider token={token}>
+          <QueryProvider>
+            {children}
+          </QueryProvider>
+        </SessionProvider>
       </body>
     </html>
   );

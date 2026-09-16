@@ -8,6 +8,7 @@ import Button from "@/src/components/atoms/Button";
 import { LoginFormData, loginSchema } from "@/src/schemas/loginSchema";
 import { useLoginMutation } from "@/src/queries/login";
 import { useRouter } from "next/navigation";
+import { setTokenCookie } from "@/src/lib/cookie";
 
 export default function RegisterPage() {
   const router = useRouter()
@@ -25,6 +26,7 @@ export default function RegisterPage() {
     try {
       const result = await login(data)
       if(result){
+        await setTokenCookie(result.data.access_token)
         router.push("/")
         alert("Pendaftaran berhasil!");
       }

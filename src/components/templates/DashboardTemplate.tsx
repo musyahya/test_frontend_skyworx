@@ -1,7 +1,7 @@
 "use client";
 
 import React, { PropsWithChildren } from "react";
-import Sidebar from "../organisms/Sidebar";
+import Sidebar from "../organisms/Navbar";
 
 function DashboardTemplate({ children }: PropsWithChildren) {
   return (
