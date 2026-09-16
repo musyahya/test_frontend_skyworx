@@ -15,7 +15,7 @@ export default function RegisterPage() {
    const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
   });
@@ -73,7 +73,6 @@ export default function RegisterPage() {
             {...register("repeatPassword")}
           />
 
-          {/* Tombol Submit */}
           <Button
             type="submit"
             disabled={loading}
