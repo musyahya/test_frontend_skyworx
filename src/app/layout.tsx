@@ -5,6 +5,7 @@ import QueryProvider from "../components/templates/QueryProvider";
 import { getTokenCookie } from "../lib/cookie";
 import { SessionProvider } from "../components/templates/SessionProvider";
 import { ToastProvider } from "../components/templates/ToastProvider";
+import { ThemeProvider } from "../components/templates/ThemeProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,7 +35,9 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
         <SessionProvider token={token}>
           <QueryProvider>
             <ToastProvider>
-              {children}
+              <ThemeProvider>
+                  {children}
+              </ThemeProvider>
             </ToastProvider>
           </QueryProvider>
         </SessionProvider>

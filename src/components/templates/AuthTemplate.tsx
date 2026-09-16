@@ -1,21 +1,44 @@
 "use client";
 
+import { useTheme } from "@/src/hooks/useTheme";
+import { Moon, Sun } from "lucide-react";
 import React, { PropsWithChildren } from "react";
-interface AuthTemplate {
+
+interface AuthTemplateProps {
   header: string;
 }
 
-function AuthTemplate({ children, header }: PropsWithChildren<AuthTemplate>) {
+function AuthTemplate({ children, header }: PropsWithChildren<AuthTemplateProps>) {
+  const { theme, toggleTheme } = useTheme();
+
   return (
-    <div className="relative flex min-h-screen items-center justify-center bg-slate-950 px-4 py-12 text-slate-100 sm:px-6 lg:px-8">
+    <div className="relative flex min-h-screen items-center justify-center bg-slate-50 text-slate-900 transition-colors duration-200 dark:bg-slate-950 dark:text-slate-100 px-4 py-12 sm:px-6 lg:px-8">
+      {/* Background Radial Glow */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 left-1/2 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-indigo-600/20 blur-[120px]" />
+        <div className="absolute -top-40 left-1/2 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-indigo-500/10 blur-[120px] dark:bg-indigo-600/20" />
       </div>
 
-      <div className="relative z-10 w-full max-w-md space-y-6 rounded-3xl border border-slate-800 bg-slate-900/80 p-8 shadow-2xl backdrop-blur-xl">
-        {/* Header & Switcher */}
+      {/* Tombol Toggle Theme */}
+      <div className="absolute top-6 right-6 sm:top-10 sm:right-10 z-20">
+        <button
+          onClick={toggleTheme}
+          type="button"
+          className="flex items-center justify-center rounded-xl border border-slate-200 bg-white p-2.5 text-slate-700 shadow-sm hover:bg-slate-100 transition-all dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
+          title="Ganti Tema"
+        >
+          {theme === "dark" ? (
+            <Sun size={18} className="text-amber-400" />
+          ) : (
+            <Moon size={18} className="text-indigo-600 dark:text-indigo-400" />
+          )}
+        </button>
+      </div>
+
+      {/* Card Konten Form */}
+      <div className="relative z-10 w-full max-w-md space-y-6 rounded-3xl border border-slate-200/80 bg-white/80 p-8 shadow-xl backdrop-blur-xl transition-colors duration-200 dark:border-slate-800 dark:bg-slate-900/80 dark:shadow-2xl">
+        {/* Header */}
         <div className="space-y-4 text-center">
-          <h2 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
+          <h2 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-3xl">
             {header}
           </h2>
         </div>
