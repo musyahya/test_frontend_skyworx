@@ -28,6 +28,7 @@ import {
 import { useForm } from "react-hook-form";
 import FormDashboardWrapper from "@/src/components/organisms/FormDashboardWrapper";
 import { useToast } from "@/src/hooks/useToast";
+import ConfirmModal from "@/src/components/molecules/ModalConfirm";
 
 export default function DashboardPage() {
   const { data: todolist, isLoading } = useTodoList();
@@ -37,6 +38,8 @@ export default function DashboardPage() {
   const { filter, setFilter } = useFilter();
   const [isEdit, setIsEdit] = useState(false);
   const {toast} = useToast()
+  const [openModal, setOpenModal] = useState(false)
+  const [todoId, setTodoId] = useState<number | null>(null)
 
   const {
     register: registerCreateTodo,
@@ -75,6 +78,7 @@ export default function DashboardPage() {
       if (result.data) {
         toast.success("Edit tugas berhasil!");
         resetEditTodo();
+        setIsEdit(false)
       }
     } catch (error) {
       toast.error("Edit tugas gagal. Silakan coba lagi.");
@@ -139,11 +143,9 @@ export default function DashboardPage() {
             </Button>
 
             <Button
-              onClick={async () => {
-                const result = await deleteTodo(data.id);
-                if (result) {
-                  alert("Pendaftaran berhasil!");
-                }
+              onClick={() => {
+                setOpenModal(true)
+                setTodoId(data.id)
               }}
               disabled={isPendingDelete}
               color="danger"
@@ -287,6 +289,33 @@ export default function DashboardPage() {
           setFilter({ order_by, order, offset: 0 })
         }
         isLoading={isLoading}
+      />
+
+      <ConfirmModal
+        isOpen={openModal}
+        onClose={() => setOpenModal(false)}
+        onConfirm={async () => {
+          try {
+            if(todoId){
+              const result = await deleteTodo(todoId);
+              if (result) {
+                toast.success("Hapus tugas berhasil!");
+                setOpenModal(false)
+                setTodoId(null)
+              }
+            }else{
+              toast.error("Hapus tugas gagal. Silakan coba lagi.");
+            }
+          } catch (error) {
+            toast.error("Hapus tugas gagal. Silakan coba lagi.");
+          }
+        }}
+        title="Hapus Tugas Ini?"
+        description="Tugas yang dihapus tidak dapat dikembalikan lagi. Apakah Anda yakin ingin melanjutkan?"
+        confirmLabel="Hapus Permanen"
+        cancelLabel="Batal"
+        variant="danger"
+        isLoading={isPendingDelete}
       />
     </DashboardTemplate>
   );

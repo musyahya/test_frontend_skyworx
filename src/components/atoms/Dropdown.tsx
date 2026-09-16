@@ -11,7 +11,7 @@ function Dropdown({options, className, ...props}: DropdownProps) {
         {...props}
         suppressHydrationWarning
         className={cn(
-          "rounded-xl border border-slate-700 bg-slate-900/60 px-4 py-2.5 text-sm text-slate-300 focus:border-indigo-500 focus:outline-none",
+          "cursor-pointer rounded-xl border border-slate-700 bg-slate-900/60 px-4 py-2.5 text-sm text-slate-300 focus:border-indigo-500 focus:outline-none",
           className
         )}
         >

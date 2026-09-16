@@ -161,7 +161,7 @@ function Table<T>({
               onChangeOffset(newOffset);
             }}
             disabled={currentOffset === 0}
-            className="flex items-center gap-1 px-3 py-1.5 rounded-xl border border-slate-800 bg-slate-950 text-slate-300 hover:bg-slate-800 disabled:opacity-30 disabled:cursor-not-allowed transition-all font-semibold"
+            className="cursor-pointer flex items-center gap-1 px-3 py-1.5 rounded-xl border border-slate-800 bg-slate-950 text-slate-300 hover:bg-slate-800 disabled:opacity-30 disabled:cursor-not-allowed transition-all font-semibold"
             title="Halaman Sebelumnya"
           >
             <ChevronLeft size={16} />
@@ -177,7 +177,7 @@ function Table<T>({
                 setCurrentOffset(newOffset);
                 onChangeOffset(newOffset);
               }}
-              className={`h-8 w-8 rounded-xl text-xs font-bold transition-all border ${
+              className={`cursor-pointer h-8 w-8 rounded-xl text-xs font-bold transition-all border ${
                 currentPageNumber === pageNumber
                   ? "bg-indigo-600 border-indigo-500 text-white shadow-md shadow-indigo-600/30"
                   : "bg-slate-950 border-slate-800 text-slate-400 hover:text-white hover:bg-slate-800"
@@ -195,7 +195,7 @@ function Table<T>({
               onChangeOffset(newOffset);
             }}
             disabled={currentOffset + limit >= totalData}
-            className="flex items-center gap-1 px-3 py-1.5 rounded-xl border border-slate-800 bg-slate-950 text-slate-300 hover:bg-slate-800 disabled:opacity-30 disabled:cursor-not-allowed transition-all font-semibold"
+            className="cursor-pointer flex items-center gap-1 px-3 py-1.5 rounded-xl border border-slate-800 bg-slate-950 text-slate-300 hover:bg-slate-800 disabled:opacity-30 disabled:cursor-not-allowed transition-all font-semibold"
             title="Halaman Selanjutnya"
           >
             <span className="hidden sm:inline-block">Selanjutnya</span>
