@@ -1,6 +1,6 @@
 "use client";
 
-import TextField from "@/src/components/atoms/InputField";
+import TextField from "@/src/components/atoms/TextField";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import AuthTemplate from "@/src/components/templates/AuthTemplate";

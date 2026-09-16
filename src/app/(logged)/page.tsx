@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import TextField from "../../components/atoms/InputField";
+import TextField from "../../components/atoms/TextField";
 import Button from "../../components/atoms/Button";
 import { Edit, Plus, Trash } from "lucide-react";
 import Dropdown from "../../components/atoms/Dropdown";
@@ -140,6 +140,7 @@ export default function DashboardPage() {
                   alert("Pendaftaran berhasil!");
                 }
               }}
+              color="danger"
             >
               <Trash size={14} />
             </Button>
@@ -156,22 +157,22 @@ export default function DashboardPage() {
         <StateCard
           title="Total Tugas"
           total={todolist?.data.total ?? 0}
-          variant="white"
+          color="white"
         />
         <StateCard
           title="To Do"
           total={todolist?.data.total_todo ?? 0}
-          variant="gray"
+          color="gray"
         />
         <StateCard
           title="In Progress"
           total={todolist?.data.total_in_progress ?? 0}
-          variant="warning"
+          color="warning"
         />
         <StateCard
           title="Done"
           total={todolist?.data.total_done ?? 0}
-          variant="success"
+          color="success"
         />
       </StateCardWrapper>
 
@@ -190,7 +191,6 @@ export default function DashboardPage() {
           <div className="flex justify-end">
             <Button
               type="submit"
-              startIcon={<Plus size={14} />}
               className="w-40"
               disabled={isPending}
             >
@@ -214,24 +214,23 @@ export default function DashboardPage() {
             />
             <div className="flex justify-end gap-2">
               <Button
+                type="submit"
+                className="w-40"
+                disabled={isPending}
+              >
+                Ubah
+              </Button>
+              <Button
                 type="button"
-                startIcon={<Plus size={14} />}
                 className="w-40"
                 disabled={isPending}
                 onClick={() => {
                   setIsEdit(false)
                   resetEditTodo()
                 }}
+                color="danger"
               >
                 Batal
-              </Button>
-              <Button
-                type="submit"
-                startIcon={<Plus size={14} />}
-                className="w-40"
-                disabled={isPending}
-              >
-                Tambah
               </Button>
             </div>
           </form>

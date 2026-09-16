@@ -44,7 +44,7 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
               "block w-full rounded-xl border border-slate-800  px-4 py-3 bg-slate-950 text-sm transition-colors focus:outline-none focus:ring-1",
               !!error
                 ? [
-                    "placeholder-red-100/50 focus:border-red-400 focus:ring-indigo-400",
+                    "placeholder-red-100/50 focus:border-red-400 focus:ring-red-400",
                   ]
                 : [
                     "text-slate-100 placeholder-slate-600 focus:border-indigo-500 focus:ring-indigo-500",
