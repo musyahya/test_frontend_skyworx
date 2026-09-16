@@ -1,8 +1,7 @@
 "use client";
 
 import TextField from "@/src/components/atoms/InputField";
-import axios from "@/src/lib/axios";
-import React, { useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { RegisterFormData, registerSchema } from "../../../schemas/registerSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
