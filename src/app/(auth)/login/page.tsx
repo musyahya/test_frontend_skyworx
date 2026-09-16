@@ -1,16 +1,17 @@
 "use client";
 
 import TextField from "@/src/components/atoms/InputField";
-import axios from "@/src/lib/axios";
-import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import AuthTemplate from "@/src/components/templates/AuthTemplate";
 import Button from "@/src/components/atoms/Button";
 import { LoginFormData, loginSchema } from "@/src/schemas/loginSchema";
+import { useLoginMutation } from "@/src/queries/login";
+import { useRouter } from "next/navigation";
 
 export default function RegisterPage() {
-  const [loading, setLoading] = useState<boolean>(false);
+  const router = useRouter()
+  const {mutate: login, isPending} = useLoginMutation()
 
    const {
     register,
@@ -22,18 +23,12 @@ export default function RegisterPage() {
 
   const onSubmit = async (data: LoginFormData) => {
     try {
-      const response = await axios.post("/register", {
-        email: data.email,
-        password: data.password,
-      });
-
-      console.log("success", response.data);
+      await login(data)
+      router.push("/")
       alert("Pendaftaran berhasil!");
     } catch (error) {
       console.error("Register gagal:", error);
       alert("Pendaftaran gagal. Silakan coba lagi.");
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -57,9 +52,9 @@ export default function RegisterPage() {
           />
           <Button
             type="submit"
-            disabled={loading}
+            disabled={isPending}
           >
-            {loading ? "Memproses..." : "Daftar Akun Baru"}
+            {isPending ? "Memproses..." : "Daftar Akun Baru"}
           </Button>
         </form>
     </AuthTemplate>

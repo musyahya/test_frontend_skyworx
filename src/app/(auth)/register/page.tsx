@@ -1,16 +1,17 @@
 "use client";
 
 import TextField from "@/src/components/atoms/InputField";
-import React from "react";
 import { useForm } from "react-hook-form";
 import { RegisterFormData, registerSchema } from "../../../schemas/registerSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import AuthTemplate from "@/src/components/templates/AuthTemplate";
 import Button from "@/src/components/atoms/Button";
 import { useRegisterMutation } from "@/src/queries/register";
+import { useRouter } from "next/navigation";
 
 export default function RegisterPage() {
   const { mutateAsync: postRegister, isPending } = useRegisterMutation();
+  const router = useRouter()
 
    const {
     register,
@@ -24,6 +25,7 @@ export default function RegisterPage() {
     try {
       await postRegister(data)
       alert("Pendaftaran berhasil!");
+      router.push("login")
     } catch (error) {
       console.error("Register gagal:", error);
       alert("Pendaftaran gagal. Silakan coba lagi.");

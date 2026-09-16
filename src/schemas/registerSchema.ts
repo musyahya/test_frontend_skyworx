@@ -5,8 +5,9 @@ export const registerSchema = z.object({
     .string()
     .nonempty("Nama harus diisi"),
   email: z
-    .email("Email tidak valid")
-    .nonempty("Email harus diisi"),
+    .string()
+    .nonempty("Email harus diisi")
+    .email("Email tidak valid"),
   password: z
     .string()
     .nonempty("Password harus diisi")
