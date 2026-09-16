@@ -49,11 +49,11 @@ function Navbar() {
           isOpen={openModal}
           onClose={() => setOpenModal(false)}
           onConfirm={handleLogout}
-          title="Hapus Tugas Ini?"
-          description="Tugas yang dihapus tidak dapat dikembalikan lagi. Apakah Anda yakin ingin melanjutkan?"
-          confirmLabel="Hapus Permanen"
+          title="Logout Sekarang?"
+          description="Apakah Anda yakin akan keluar?"
+          confirmLabel="Keluar"
           cancelLabel="Batal"
-          variant="danger"
+          variant="warning"
         />
     </div>
   );

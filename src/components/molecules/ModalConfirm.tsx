@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect } from "react";
+import { createPortal } from "react-dom";
 import { AlertTriangle, Trash2, X, Loader2 } from "lucide-react";
 
 export interface ConfirmModalProps {
@@ -43,7 +44,7 @@ export default function ConfirmModal({
     };
   }, [isOpen, onClose, isLoading]);
 
-  if (!isOpen) return null;
+  if (!isOpen || typeof document === "undefined") return null;
 
   const variantStyles = {
     danger: {
@@ -60,7 +61,8 @@ export default function ConfirmModal({
 
   const currentVariant = variantStyles[variant];
 
-  return (
+  return createPortal(
+    <>
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
       <div
@@ -120,5 +122,7 @@ export default function ConfirmModal({
         </div>
       </div>
     </div>
+    </>,
+    document.body,
   );
 }
