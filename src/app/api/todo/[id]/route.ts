@@ -3,10 +3,10 @@ import { NextResponse } from "next/server";
 
 export const dummyTodos: Todo = { id: 1, name: "Review pull request refactoring admin", status: "todo" }
 
-export async function GET(request: Request, {params} : {params: Promise<{id: number}>}) {
+export async function GET(request: Request, {params} : {params: Promise<{id: string}>}) {
   try {
     const {id} = await params
-    if(id > 15){
+    if(Number(id) > 15){
          return NextResponse.json(
         { message: "Todo not found" },
         { status: 404 }
@@ -25,12 +25,12 @@ export async function GET(request: Request, {params} : {params: Promise<{id: num
   }
 }
 
-export async function PUT(request: Request, {params} : {params: Promise<{id: number}>}) {
+export async function PUT(request: Request, {params} : {params: Promise<{id: string}>}) {
   try {
     const {id} = await params
     const body = await request.json();
     const { name, status } = body;
-     if(id > 15){
+     if(Number(id) > 15){
          return NextResponse.json(
         { message: "Todo not found" },
         { status: 404 }
@@ -56,10 +56,10 @@ export async function PUT(request: Request, {params} : {params: Promise<{id: num
   }
 }
 
-export async function DELETE(request: Request, {params} : {params: Promise<{id: number}>}) {
+export async function DELETE(request: Request, {params} : {params: Promise<{id: string}>}) {
   try {
     const {id} = await params
-     if(id > 15){
+     if(Number(id) > 15){
          return NextResponse.json(
         { message: "Todo not found" },
         { status: 404 }
