@@ -148,6 +148,10 @@ export default function DashboardPage() {
                 setValueEditTodo("name", data.name);
                 setValueEditTodo("status", data.status);
                 setIsEdit(true);
+                const element = document.getElementById('targetScroll');
+                if (element) {
+                  element.scrollIntoView({ behavior: 'smooth' });
+                }
               }}
               className="w-auto p-2"
               title="Edit Tugas"
@@ -208,6 +212,7 @@ export default function DashboardPage() {
       <FormDashboardWrapper title="Buat Tugas Baru">
         <form
           noValidate
+          id="targetScroll"
           onSubmit={handleSubmitCreateTodo(onSubmitCreateTodo)}
           className="flex flex-col gap-3"
         >
