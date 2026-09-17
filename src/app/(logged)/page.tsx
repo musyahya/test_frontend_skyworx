@@ -1,11 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { startTransition, useOptimistic, useState } from "react";
 import TextField from "../../components/atoms/TextField";
 import Button from "../../components/atoms/Button";
-import { Check, Edit, Loader, Plus, Trash } from "lucide-react";
-import Dropdown from "../../components/atoms/Dropdown";
-import options from "../../lib/options";
+import { Check, Edit, Loader, Trash } from "lucide-react";
 import {
   useCreateTodo,
   useDeleteTodo,
@@ -31,12 +29,16 @@ import { useToast } from "@/src/hooks/useToast";
 import ConfirmModal from "@/src/components/molecules/ModalConfirm";
 import FilterDashboard from "@/src/components/organisms/FilterDashboard";
 import Badge from "@/src/components/atoms/Badge";
+import { AxiosResponse } from "axios";
+import { UseMutateAsyncFunction } from "@tanstack/react-query";
 
 export default function DashboardPage() {
   const { data: todolist, isLoading, refetch, isError, error } = useTodoList();
-  const { mutateAsync: createTodo, isPending: isPendingCreate } = useCreateTodo();
+  const { mutateAsync: createTodo, isPending: isPendingCreate } =
+    useCreateTodo();
   const { mutateAsync: editTodo, isPending: isPendingEdit } = useEditodo();
-  const { mutateAsync: deleteTodo, isPending: isPendingDelete } = useDeleteTodo();
+  const { mutateAsync: deleteTodo, isPending: isPendingDelete } =
+    useDeleteTodo();
   const { filter, setFilter } = useFilter();
   const [isEdit, setIsEdit] = useState(false);
   const { toast } = useToast();
@@ -68,7 +70,7 @@ export default function DashboardPage() {
       if (result?.data) {
         toast.success("Buat tugas baru berhasil!");
         resetCreateTodo();
-        refetch()
+        refetch();
       }
     } catch (error) {
       toast.error("Buat tugas baru gagal. Silakan coba lagi.");
@@ -82,7 +84,7 @@ export default function DashboardPage() {
         toast.success("Edit tugas berhasil!");
         resetEditTodo();
         setIsEdit(false);
-        refetch()
+        refetch();
       }
     } catch (error) {
       toast.error("Edit tugas gagal. Silakan coba lagi.");
@@ -108,14 +110,14 @@ export default function DashboardPage() {
     {
       header: "Status",
       accessor: (data) => (
-        <Badge 
-        color={
-          data.status === "todo"
-          ? "primary"
-          : data.status === "inProgress"
-          ? "warning"
-          : "success"
-        }
+        <Badge
+          color={
+            data.status === "todo"
+              ? "primary"
+              : data.status === "inProgress"
+                ? "warning"
+                : "success"
+          }
         >
           {data.status}
         </Badge>
@@ -127,7 +129,6 @@ export default function DashboardPage() {
       accessor: (data) => {
         return (
           <div className="flex gap-2">
-          
             <Button
               onClick={() => {
                 setOpenModal(true);
@@ -141,7 +142,7 @@ export default function DashboardPage() {
               <Trash size={14} />
             </Button>
 
-             <Button
+            <Button
               onClick={() => {
                 setValueEditTodo("id", data.id);
                 setValueEditTodo("name", data.name);
@@ -154,44 +155,23 @@ export default function DashboardPage() {
               <Edit size={14} />
             </Button>
 
-            {
-              (data.status === "todo" || data.status === "inProgress") && (
-                <Button
-                  onClick={async () => {
-                   try {
-                      const result = await editTodo({
-                        id: data.id,
-                        name: data.name,
-                        status: data.status === "todo" ? "inProgress" : "done",
-                      });
-                      if (result) {
-                        toast.success("Status tugas berhasil diperbarui!");
-                        refetch()
-                      }
-                    } catch (error) {
-                      toast.error("Gagal memperbarui status tugas.");
-                    }
-                  }}
-                  className="w-auto p-2"
-                  title={data.status === "todo" ? "In Progress" : "Done"}
-                  color={data.status === "todo" ? "warning" : "success"}
-                >
-                  {data.status === "todo" ? <Loader size={14} /> :  <Check size={14} />}
-                </Button>
-              )
-            }
+            <ButtonActionProgressTodo
+              data={data}
+              editTodo={editTodo}
+              refetch={refetch}
+            />
           </div>
         );
       },
     },
   ];
 
-  if(isError && error){
+  if (isError && error) {
     return (
       <DashboardTemplate>
         <p>Terjadi kesalahan {error.message}</p>
       </DashboardTemplate>
-    )
+    );
   }
 
   return (
@@ -281,7 +261,7 @@ export default function DashboardPage() {
       )}
 
       {/* SEARCH & FILTER BAR */}
-      <FilterDashboard/>
+      <FilterDashboard />
 
       {/* TODOLIST TABLE SECTION */}
       <Table
@@ -314,7 +294,7 @@ export default function DashboardPage() {
                 toast.success("Hapus tugas berhasil!");
                 setOpenModal(false);
                 setTodoId(null);
-                refetch()
+                refetch();
               }
             } else {
               toast.error("Hapus tugas gagal. Silakan coba lagi.");
@@ -333,3 +313,62 @@ export default function DashboardPage() {
     </DashboardTemplate>
   );
 }
+
+interface ButtonActionProgressTodo {
+  editTodo: UseMutateAsyncFunction<
+    AxiosResponse<true, any, {}, any>,
+    Error,
+    Todo,
+    unknown
+  >;
+  refetch: () => void;
+  data: Todo;
+}
+
+export const ButtonActionProgressTodo = ({
+  data,
+  editTodo,
+  refetch,
+}: ButtonActionProgressTodo) => {
+  const { toast } = useToast();
+  const [optimisticStatus, setOptimisticStatus] = useOptimistic(
+    data.status,
+    (currentState, newStatus: TodoType) => newStatus,
+  );
+
+  return (
+    <>
+      {(optimisticStatus === "todo" || optimisticStatus === "inProgress") && (
+        <Button
+          onClick={async () => {
+            const nextStatus = data.status === "todo" ? "inProgress" : "done";
+
+            startTransition(async () => {
+              setOptimisticStatus(nextStatus);
+
+              try {
+                const result = await editTodo({
+                  id: data.id,
+                  name: data.name,
+                  status: nextStatus,
+                });
+
+                if (result) {
+                  toast.success("Status tugas berhasil diperbarui!");
+                  refetch();
+                }
+              } catch (error) {
+                toast.error("Gagal memperbarui status tugas.");
+              }
+            });
+          }}
+          className="w-auto p-2"
+          title={data.status === "todo" ? "In Progress" : "Done"}
+          color={data.status === "todo" ? "warning" : "success"}
+        >
+          {data.status === "todo" ? <Loader size={14} /> : <Check size={14} />}
+        </Button>
+      )}
+    </>
+  );
+};
