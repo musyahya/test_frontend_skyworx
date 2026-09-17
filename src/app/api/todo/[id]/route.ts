@@ -1,19 +1,23 @@
-import { Todo } from "@/src/types/todo";
+import { dummyTodos } from "@/src/data/todo";
 import { NextResponse } from "next/server";
 
-export const dummyTodos: Todo = { id: 1, name: "Review pull request refactoring admin", status: "todo" }
+const getTodoById = (id: number) => dummyTodos.filter((data) => data.id === id)
+const getIndexTodoById = (id: number) => dummyTodos.findIndex((data) => data.id === id)
 
 export async function GET(request: Request, {params} : {params: Promise<{id: string}>}) {
   try {
     const {id} = await params
-    if(Number(id) > 15){
+
+    const filterTodo = getTodoById(Number(id)) 
+
+    if(filterTodo.length === 0){
          return NextResponse.json(
         { message: "Todo not found" },
         { status: 404 }
       );
     }else{
         return NextResponse.json(
-          dummyTodos,
+          filterTodo,
         );
     }
 
@@ -30,7 +34,10 @@ export async function PUT(request: Request, {params} : {params: Promise<{id: str
     const {id} = await params
     const body = await request.json();
     const { name, status } = body;
-     if(Number(id) > 15){
+
+    const filterTodo = getTodoById(Number(id)) 
+
+     if(filterTodo.length === 0){
          return NextResponse.json(
         { message: "Todo not found" },
         { status: 404 }
@@ -42,6 +49,11 @@ export async function PUT(request: Request, {params} : {params: Promise<{id: str
             { status: 422 }
           );
         }
+
+        const indexTodo =  getIndexTodoById(Number(id))
+
+        dummyTodos[indexTodo].name = name
+        dummyTodos[indexTodo].status = status
     
         return NextResponse.json(
           true,
@@ -59,12 +71,17 @@ export async function PUT(request: Request, {params} : {params: Promise<{id: str
 export async function DELETE(request: Request, {params} : {params: Promise<{id: string}>}) {
   try {
     const {id} = await params
-     if(Number(id) > 15){
+    const filterTodo = getTodoById(Number(id)) 
+
+     if(filterTodo.length === 0){
          return NextResponse.json(
         { message: "Todo not found" },
         { status: 404 }
       );
     }else{
+        const indexTodo =  getIndexTodoById(Number(id))
+        dummyTodos.splice(indexTodo, 1);
+
         return NextResponse.json(
           true,
           { status: 201 }

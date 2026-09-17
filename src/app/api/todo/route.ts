@@ -1,23 +1,5 @@
-import { Todo } from "@/src/types/todo";
+import { dummyTodos } from "@/src/data/todo";
 import { NextResponse } from "next/server";
-
-export const dummyTodos: Todo[] = [
-  { id: 1, name: "Review pull request refactoring admin", status: "todo" },
-  { id: 2, name: "Optimasi query Prisma ke database SQLite", status: "done" },
-  { id: 3, name: "Integrasi fitur pencarian di dashboard", status: "inProgress" },
-  { id: 4, name: "Setup React Query DevTools", status: "done" },
-  { id: 5, name: "Bayar tagihan listrik dan internet", status: "todo" },
-  { id: 6, name: "Perbaiki bug responsif di tampilan mobile", status: "inProgress" },
-  { id: 7, name: "Beli kebutuhan dapur dan bahan makanan", status: "done" },
-  { id: 8, name: "Konfigurasi Dockerfile untuk deployment", status: "todo" },
-  { id: 9, name: "Servis rutin motor dan ganti oli", status: "todo" },
-  { id: 10, name: "Cek error log aplikasi di dashboard", status: "done" },
-  { id: 11, name: "Tulis dokumentasi endpoint API Route", status: "todo" },
-  { id: 12, name: "Olahraga malam 30 menit", status: "inProgress" },
-  { id: 13, name: "Update package library ke versi terbaru", status: "done" },
-  { id: 14, name: "Persiapan slide materi demo proyek", status: "todo" },
-  { id: 15, name: "Backup database lokal secara otomatis", status: "inProgress" },
-];
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -27,12 +9,12 @@ export async function GET(request: Request) {
   const limitParam = searchParams.get("limit");
   const offsetParam = searchParams.get("offset");
   const orderBy = searchParams.get("order_by") || "id";
-  const order = searchParams.get("order") || "asc";
+  const order = searchParams.get("order") || "desc";
 
   const limit = Number(limitParam ?? 10);
   const offset = Number(offsetParam ?? 0);
 
-  let filteredTodos = dummyTodos;
+  let filteredTodos = [...dummyTodos];
 
   const total = filteredTodos.length;
   const totalTodo = filteredTodos.filter((data) => data.status === "todo").length;
@@ -94,8 +76,18 @@ export async function POST(request: Request) {
       );
     }
 
+    console.log(dummyTodos, dummyTodos.length, dummyTodos[dummyTodos.length - 1])
+
+    const id = dummyTodos[dummyTodos.length - 1].id + 1
+
+    dummyTodos.push({
+      id,
+      name,
+      status: "todo"
+    })
+
     return NextResponse.json(
-      1,
+      id,
       { status: 201 }
     );
   } catch (error) {

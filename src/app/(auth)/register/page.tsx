@@ -28,7 +28,7 @@ export default function RegisterPage() {
       const result = await postRegister(data);
       if (result) {
         toast.success("Buat Akun Berhasil");
-        router.push("/login"); // menambahkan slash '/' agar route absolut konsisten
+        router.push("/login");
       }
     } catch (error) {
       toast.error("Pendaftaran gagal. Silakan coba lagi.");

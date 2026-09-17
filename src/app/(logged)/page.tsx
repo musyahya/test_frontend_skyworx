@@ -31,7 +31,7 @@ import { useToast } from "@/src/hooks/useToast";
 import ConfirmModal from "@/src/components/molecules/ModalConfirm";
 
 export default function DashboardPage() {
-  const { data: todolist, isLoading } = useTodoList();
+  const { data: todolist, isLoading, refetch, isError, error } = useTodoList();
   const { mutateAsync: createTodo, isPending: isPendingCreate } = useCreateTodo();
   const { mutateAsync: editTodo, isPending: isPendingEdit } = useEditodo();
   const { mutateAsync: deleteTodo, isPending: isPendingDelete } = useDeleteTodo();
@@ -66,6 +66,7 @@ export default function DashboardPage() {
       if (result?.data) {
         toast.success("Buat tugas baru berhasil!");
         resetCreateTodo();
+        refetch()
       }
     } catch (error) {
       toast.error("Buat tugas baru gagal. Silakan coba lagi.");
@@ -79,6 +80,7 @@ export default function DashboardPage() {
         toast.success("Edit tugas berhasil!");
         resetEditTodo();
         setIsEdit(false);
+        refetch()
       }
     } catch (error) {
       toast.error("Edit tugas gagal. Silakan coba lagi.");
@@ -116,6 +118,7 @@ export default function DashboardPage() {
               });
               if (result) {
                 toast.success("Status tugas berhasil diperbarui!");
+                refetch()
               }
             } catch (error) {
               toast.error("Gagal memperbarui status tugas.");
@@ -167,6 +170,14 @@ export default function DashboardPage() {
       },
     },
   ];
+
+  if(isError && error){
+    return (
+      <DashboardTemplate>
+        <p>Terjadi kesalahan {error.message}</p>
+      </DashboardTemplate>
+    )
+  }
 
   return (
     <DashboardTemplate>
@@ -317,6 +328,7 @@ export default function DashboardPage() {
                 toast.success("Hapus tugas berhasil!");
                 setOpenModal(false);
                 setTodoId(null);
+                refetch()
               }
             } else {
               toast.error("Hapus tugas gagal. Silakan coba lagi.");
