@@ -39,7 +39,7 @@ export default function LoginPage() {
 
   return (
     <AuthTemplate header="Selamat Datang Kembali">
-      <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+      <form noValidate className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
         <TextField
           label="Email"
           type="email"

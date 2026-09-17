@@ -37,7 +37,7 @@ export default function RegisterPage() {
 
   return (
     <AuthTemplate header="Buat Akun Baru">
-      <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+      <form noValidate className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
         <TextField
           label="Nama"
           placeholder="Masukan Nama"

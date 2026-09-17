@@ -201,6 +201,7 @@ export default function DashboardPage() {
       {/* FORM TAMBAH TUGAS */}
       <FormDashboardWrapper title="Buat Tugas Baru">
         <form
+          noValidate
           onSubmit={handleSubmitCreateTodo(onSubmitCreateTodo)}
           className="flex flex-col gap-3"
         >
@@ -222,6 +223,7 @@ export default function DashboardPage() {
       {isEdit && (
         <FormDashboardWrapper title="Edit Tugas">
           <form
+            noValidate
             onSubmit={handleSubmitEditTodo(onSubmitEditTodo)}
             className="flex flex-col gap-3"
           >
