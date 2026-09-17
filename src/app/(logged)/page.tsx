@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import TextField from "../../components/atoms/TextField";
 import Button from "../../components/atoms/Button";
-import { Edit, Plus, Trash } from "lucide-react";
+import { Check, Edit, Loader, Plus, Trash } from "lucide-react";
 import Dropdown from "../../components/atoms/Dropdown";
 import options from "../../lib/options";
 import {
@@ -30,6 +30,7 @@ import FormDashboardWrapper from "@/src/components/organisms/FormDashboardWrappe
 import { useToast } from "@/src/hooks/useToast";
 import ConfirmModal from "@/src/components/molecules/ModalConfirm";
 import FilterDashboard from "@/src/components/organisms/FilterDashboard";
+import Badge from "@/src/components/atoms/Badge";
 
 export default function DashboardPage() {
   const { data: todolist, isLoading, refetch, isError, error } = useTodoList();
@@ -107,32 +108,17 @@ export default function DashboardPage() {
     {
       header: "Status",
       accessor: (data) => (
-        <Dropdown
-          options={options.todoStatusTable}
-          value={data.status}
-          onChange={async (e) => {
-            try {
-              const result = await editTodo({
-                id: data.id,
-                name: data.name,
-                status: e.target.value as TodoType,
-              });
-              if (result) {
-                toast.success("Status tugas berhasil diperbarui!");
-                refetch()
-              }
-            } catch (error) {
-              toast.error("Gagal memperbarui status tugas.");
-            }
-          }}
-          className={`${
-            data.status === "done"
-              ? "border-emerald-500/30 bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400"
-              : data.status === "inProgress"
-                ? "border-amber-500/30 bg-amber-50 text-amber-700 dark:bg-amber-500/10 dark:text-amber-400"
-                : "border-slate-300 bg-slate-100 text-slate-700 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-300"
-          }`}
-        />
+        <Badge 
+        color={
+          data.status === "todo"
+          ? "primary"
+          : data.status === "inProgress"
+          ? "warning"
+          : "success"
+        }
+        >
+          {data.status}
+        </Badge>
       ),
       sortKey: "status",
     },
@@ -141,19 +127,7 @@ export default function DashboardPage() {
       accessor: (data) => {
         return (
           <div className="flex gap-2">
-            <Button
-              onClick={() => {
-                setValueEditTodo("id", data.id);
-                setValueEditTodo("name", data.name);
-                setValueEditTodo("status", data.status);
-                setIsEdit(true);
-              }}
-              className="!w-auto p-2"
-              title="Edit Tugas"
-            >
-              <Edit size={14} />
-            </Button>
-
+          
             <Button
               onClick={() => {
                 setOpenModal(true);
@@ -161,11 +135,51 @@ export default function DashboardPage() {
               }}
               disabled={isPendingDelete}
               color="danger"
-              className="!w-auto p-2"
+              className="w-auto p-2"
               title="Hapus Tugas"
             >
               <Trash size={14} />
             </Button>
+
+             <Button
+              onClick={() => {
+                setValueEditTodo("id", data.id);
+                setValueEditTodo("name", data.name);
+                setValueEditTodo("status", data.status);
+                setIsEdit(true);
+              }}
+              className="w-auto p-2"
+              title="Edit Tugas"
+            >
+              <Edit size={14} />
+            </Button>
+
+            {
+              (data.status === "todo" || data.status === "inProgress") && (
+                <Button
+                  onClick={async () => {
+                   try {
+                      const result = await editTodo({
+                        id: data.id,
+                        name: data.name,
+                        status: data.status === "todo" ? "inProgress" : "done",
+                      });
+                      if (result) {
+                        toast.success("Status tugas berhasil diperbarui!");
+                        refetch()
+                      }
+                    } catch (error) {
+                      toast.error("Gagal memperbarui status tugas.");
+                    }
+                  }}
+                  className="w-auto p-2"
+                  title={data.status === "todo" ? "In Progress" : "Done"}
+                  color={data.status === "todo" ? "warning" : "success"}
+                >
+                  {data.status === "todo" ? <Loader size={14} /> :  <Check size={14} />}
+                </Button>
+              )
+            }
           </div>
         );
       },

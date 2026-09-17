@@ -17,22 +17,7 @@ const options = {
             value: "done",
         },
     ],
-
-    todoStatusTable: [
-        {
-            label: "To Do",
-            value: "todo",
-        },
-        {
-            label: "In Progress",
-            value: "inprogress",
-        },
-        {
-            label: "Done",
-            value: "done",
-        },
-    ],
-
+    
     perPage: [
         {
             label: "5",

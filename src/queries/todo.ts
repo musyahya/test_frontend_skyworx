@@ -17,7 +17,9 @@ export const useTodoList = () => {
   }
 
   if (filter.status) {
-    params.status = filter.status;
+    if(filter.status !== "all"){
+      params.status = filter.status;
+    }
   }
 
   if(filter.order_by && filter.order) {

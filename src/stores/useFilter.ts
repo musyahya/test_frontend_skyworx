@@ -11,7 +11,7 @@ export type FilterType = {
   order_by: string | null;
 
   search: string;
-  status?: TodoType
+  status?: TodoType | "all"
 };
 
 const filterInitialValue: FilterType = {
