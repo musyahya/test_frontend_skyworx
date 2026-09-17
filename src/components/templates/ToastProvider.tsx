@@ -58,7 +58,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
       {children}
 
       {/* Container Toast (Pojok Kanan Atas) */}
-      <div className="fixed top-5 right-5 z-50 flex flex-col gap-3 max-w-sm w-full pointer-events-none px-4 sm:px-0">
+      <div className="fixed top-5 right-1/2 translate-x-1/2 z-50 flex flex-col gap-3 max-w-sm w-full pointer-events-none px-4 sm:px-0">
         {toasts.map((item) => (
           <ToastContainer key={item.id} item={item} onClose={() => removeToast(item.id)} />
         ))}
