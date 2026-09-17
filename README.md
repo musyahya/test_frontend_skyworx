@@ -1,36 +1,115 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Test Frontend Skyworx
 
-## Getting Started
+Aplikasi frontend berbasis Next.js untuk manajemen tugas harian dengan fitur autentikasi, dashboard todo, filter, dan tema gelap/terang.
 
-First, run the development server:
+## Fitur Utama
+
+- Autentikasi pengguna: login dan register
+- Dashboard tugas dengan CRUD sederhana
+- Tambah, edit, hapus, dan ubah status tugas
+- Filter pencarian berdasarkan nama dan status tugas
+- Ringkasan tugas dalam kartu statistik
+- Dukungan tema light/dark mode
+- Notifikasi toast untuk feedback pengguna
+- Integrasi React Query untuk state management data server-side
+
+## Stack Teknologi
+
+- Next.js 16
+- React 19
+- TypeScript
+- Tailwind CSS
+- TanStack React Query
+- Zustand
+- Zod + React Hook Form
+- Axios
+
+## Struktur Proyek
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+src/
+├── app/
+│   ├── (auth)/
+│   │   ├── login/
+│   │   └── register/
+│   ├── (logged)/
+│   ├── api/
+│   │   ├── login/
+│   │   ├── register/
+│   │   ├── todo/
+│   │   └── user/
+│   └── layout.tsx
+├── components/
+│   ├── atoms/
+│   ├── molecules/
+│   ├── organisms/
+│   └── templates/
+├── data/
+├── hooks/
+├── lib/
+├── queries/
+├── schemas/
+├── stores/
+├── styles/
+├── types/
+└── ...
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Prasyarat
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Pastikan perangkat Anda sudah memiliki:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Node.js 20+
+- Bun 1.4+ (direkomendasikan, sesuai packageManager)
 
-## Learn More
+## Instalasi
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+bun install
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Menjalankan Aplikasi
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Untuk menjalankan server development:
 
-## Deploy on Vercel
+```bash
+bun run dev
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Setelah itu, buka browser ke:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+http://localhost:3000
+```
+
+## Script yang Tersedia
+
+```bash
+bun run dev     # menjalankan aplikasi di mode development
+bun run build   # membangun aplikasi untuk produksi
+bun run start   # menjalankan build yang sudah dibuat
+bun run lint    # menjalankan eslint
+```
+
+## Alur Aplikasi
+
+1. Pengguna mendaftar pada halaman register.
+2. Setelah berhasil, pengguna login menggunakan email dan password.
+3. Setelah autentikasi berhasil, pengguna diarahkan ke dashboard.
+4. Di dashboard, pengguna dapat:
+   - melihat ringkasan todos
+   - menambah task baru
+   - mengedit task
+   - menghapus task
+   - memfilter dan mencari task
+   - mengubah status task
+
+## Catatan Implementasi
+
+- Data todo bersifat dummy dan dikelola di folder `src/data` serta API route di `src/app/api`.
+- Autentikasi dan sesi pengguna diatur melalui cookie serta provider di `src/components/templates`.
+- Validasi form menggunakan Zod dan React Hook Form.
+
+## Lisensi
+
+Proyek ini dibuat untuk kebutuhan test frontend dan digunakan sebagai contoh implementasi aplikasi tugas modern.
