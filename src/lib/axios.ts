@@ -18,7 +18,6 @@ axios.interceptors.request.use(
       }
 
     } catch (error) {
-      console.error("❌ [SERVER-AXIOS] Interceptor Error:", error);
       return Promise.reject(error);
     }
     return config;
@@ -46,8 +45,6 @@ axios.interceptors.response.use(
             refresh_token: token.refresh_token,
           }
         );
-
-        console.log("response", response)
 
         await setTokenCookie({
           access_token: response.data.access_token,

@@ -76,8 +76,6 @@ export async function POST(request: Request) {
       );
     }
 
-    console.log(dummyTodos, dummyTodos.length, dummyTodos[dummyTodos.length - 1])
-
     const id = dummyTodos[dummyTodos.length - 1].id + 1
 
     dummyTodos.push({
