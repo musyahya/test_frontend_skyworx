@@ -39,8 +39,8 @@ axios.interceptors.response.use(
           throw new Error("Refresh token not found.");
         }
 
-        const response = await Axios.post(
-          `${process.env.BASE_URL_ORIGIN}/refresh-token`,
+        const response = await axios.post(
+          `/api/refresh-token`,
           {
             refresh_token: token.refresh_token,
           }
@@ -48,7 +48,7 @@ axios.interceptors.response.use(
 
         await setTokenCookie({
           access_token: response.data.access_token,
-          refresh_token: response.data.refresh_token || token.refresh_token,
+          refresh_token: response.data.refresh_token,
         });
 
         originalRequest.headers.Authorization = `Bearer ${response.data.access_token}`;
