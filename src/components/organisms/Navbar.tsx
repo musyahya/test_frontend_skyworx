@@ -2,20 +2,19 @@
 
 import { clearAuthCookie } from "@/src/lib/cookie";
 import { useUserMe } from "@/src/queries/user";
-import { LogOut, Moon, Sun } from "lucide-react";
+import { LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import Avatar from "../atoms/Avatar";
 import { useToast } from "@/src/hooks/useToast";
 import ConfirmModal from "../molecules/ModalConfirm";
-import { useTheme } from "@/src/hooks/useTheme";
+import ToggleTheme from "../atoms/ToggleTheme";
 
 function Navbar() {
   const router = useRouter();
   const { data, isLoading } = useUserMe();
   const { toast } = useToast();
   const [openModal, setOpenModal] = useState(false);
-  const { theme, toggleTheme } = useTheme();
 
   const handleLogout = async () => {
     await clearAuthCookie();
@@ -35,18 +34,7 @@ function Navbar() {
 
         <div className="flex items-center gap-4">
           {/* Tombol Toggle Theme */}
-          <button
-            onClick={toggleTheme}
-            type="button"
-            className="flex items-center justify-center rounded-xl border border-slate-200 bg-slate-50 p-2.5 text-slate-700 shadow-sm hover:bg-slate-100 transition-all dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
-            title="Ganti Tema"
-          >
-            {theme === "dark" ? (
-              <Sun size={18} className="text-amber-400" />
-            ) : (
-              <Moon size={18} className="text-indigo-600 dark:text-indigo-400" />
-            )}
-          </button>
+          <ToggleTheme />
 
           {/* Avatar User */}
           <Avatar

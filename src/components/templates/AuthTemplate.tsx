@@ -3,14 +3,16 @@
 import { useTheme } from "@/src/hooks/useTheme";
 import { Moon, Sun } from "lucide-react";
 import React, { PropsWithChildren } from "react";
+import ToggleTheme from "../atoms/ToggleTheme";
 
 interface AuthTemplateProps {
   header: string;
 }
 
-function AuthTemplate({ children, header }: PropsWithChildren<AuthTemplateProps>) {
-  const { theme, toggleTheme } = useTheme();
-
+function AuthTemplate({
+  children,
+  header,
+}: PropsWithChildren<AuthTemplateProps>) {
   return (
     <div className="relative flex min-h-screen items-center justify-center bg-slate-50 text-slate-900 transition-colors duration-200 dark:bg-slate-950 dark:text-slate-100 px-4 py-12 sm:px-6 lg:px-8">
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
@@ -18,18 +20,7 @@ function AuthTemplate({ children, header }: PropsWithChildren<AuthTemplateProps>
       </div>
 
       <div className="absolute top-6 right-6 sm:top-10 sm:right-10 z-20">
-        <button
-          onClick={toggleTheme}
-          type="button"
-          className="flex items-center justify-center rounded-xl border border-slate-200 bg-white p-2.5 text-slate-700 shadow-sm hover:bg-slate-100 transition-all dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
-          title="Ganti Tema"
-        >
-          {theme === "dark" ? (
-            <Sun size={18} className="text-amber-400" />
-          ) : (
-            <Moon size={18} className="text-indigo-600 dark:text-indigo-400" />
-          )}
-        </button>
+        <ToggleTheme />
       </div>
 
       {/* Card Konten Form */}
