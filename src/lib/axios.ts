@@ -11,8 +11,8 @@ axios.interceptors.request.use(
     try {
       const token = await getTokenCookie();
 
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
+      if (token?.access_token) {
+        config.headers.Authorization = `Bearer ${token.access_token}`;
       }
 
     } catch (error) {

@@ -14,6 +14,7 @@ export async function POST(request: Request) {
 
     const token = {
       access_token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.KMUFsIDTnFmyG3nMiGM6H9FNFUROf3wh7SmqJp-QV30",
+      refresh_token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gYXNkIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.q_BDT_ruTKPRjNlUkjLWQFUFGtESAXMh4H0ToUuCFVg",
     };
 
     return NextResponse.json(

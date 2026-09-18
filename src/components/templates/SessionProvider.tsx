@@ -1,9 +1,10 @@
 "use client"
 
+import { Login } from "@/src/types/login";
 import { createContext, useState, useEffect } from "react";
 
 interface SessionContextProps {
-  token: string | null;
+  token: Login | null;
   isLoading: boolean;
 }
 
@@ -16,9 +17,9 @@ export function SessionProvider({
   token,
 }: {
   children: React.ReactNode;
-  token: string | null;
+  token: Login | null;
 }) {
-  const [tokenLocal, setTokenLocal] = useState<string | null>(token);
+  const [tokenLocal, setTokenLocal] = useState<Login | null>(token);
    const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {

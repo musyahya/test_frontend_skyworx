@@ -28,7 +28,7 @@ export default function LoginPage() {
     try {
       const result = await login(data);
       if (result) {
-        await setTokenCookie(result.data.access_token);
+        await setTokenCookie(result.data);
         router.push("/");
         toast.success("Login berhasil!");
       }
