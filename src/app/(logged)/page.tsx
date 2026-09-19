@@ -119,7 +119,13 @@ export default function DashboardPage() {
                 : "success"
           }
         >
-          {data.status}
+          {
+            data.status === "todo"
+            ? "To Do"
+            : data.status === "inProgress"
+            ? "In Progress"
+            : "Done"
+          }
         </Badge>
       ),
       sortKey: "status",
