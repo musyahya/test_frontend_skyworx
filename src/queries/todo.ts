@@ -3,28 +3,30 @@ import axios from "../lib/axios";
 import { TodoList } from "../types/todo";
 import useFilter from "../stores/useFilter";
 import { CreateTodoFormData, EditTodoFormData } from "../schemas/todoSchema";
+import { useDebounce } from "@/src/hooks/useDebounce";
 
 export const useTodoList = () => {
   const { filter } = useFilter();
+  const debounce = useDebounce(filter)
 
   const params: Record<string, any> = {
-    offset: filter.offset,
-    limit: filter.limit,
+    offset: debounce.offset,
+    limit: debounce.limit,
   };
 
-  if (filter.search) {
-    params.name = filter.search;
+  if (debounce.search) {
+    params.name = debounce.search;
   }
 
-  if (filter.status) {
-    if(filter.status !== "all"){
-      params.status = filter.status;
+  if (debounce.status) {
+    if(debounce.status !== "all"){
+      params.status = debounce.status;
     }
   }
 
-  if(filter.order_by && filter.order) {
-    params.order_by = filter.order_by;
-    params.order = filter.order;
+  if(debounce.order_by && debounce.order) {
+    params.order_by = debounce.order_by;
+    params.order = debounce.order;
   }
 
   return useQuery({
