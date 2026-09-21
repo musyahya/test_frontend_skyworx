@@ -15,7 +15,7 @@ export const useTodoList = () => {
   };
 
   if (debounce.search) {
-    params.name = debounce.search;
+    params.search = debounce.search;
   }
 
   if (debounce.status) {
