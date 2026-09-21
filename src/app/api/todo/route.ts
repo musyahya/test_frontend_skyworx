@@ -16,7 +16,6 @@ export async function GET(request: Request) {
 
   let filteredTodos = [...dummyTodos];
 
-  const total = filteredTodos.length;
   const totalTodo = filteredTodos.filter((data) => data.status === "todo").length;
   const totalInProgress = filteredTodos.filter((data) => data.status === "inProgress").length;
   const totalDone = filteredTodos.filter((data) => data.status === "done").length;
@@ -54,6 +53,8 @@ export async function GET(request: Request) {
   let paginatedTodos = filteredTodos;
 
   paginatedTodos = filteredTodos.slice(offset, offset + limit);
+
+  const total = filteredTodos.length;
 
   return NextResponse.json({
     total,
